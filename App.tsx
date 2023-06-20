@@ -7,6 +7,7 @@
 
 import React from 'react';
 import {SafeAreaView, StatusBar, useColorScheme} from 'react-native';
+import HomeScreen from './src/screens/HomeScreen';
 
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 
@@ -23,6 +24,7 @@ function App(): JSX.Element {
         barStyle={isDarkMode ? 'light-content' : 'dark-content'}
         backgroundColor={backgroundStyle.backgroundColor}
       />
+      <HomeScreen />
     </SafeAreaView>
   );
 }

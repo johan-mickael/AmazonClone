@@ -13,10 +13,6 @@ use a clean typescript [template](https://github.com/react-native-community/reac
 ```sh
 react-native init AmazonClone --template react-native-template-typescript
 ```
-adding react native vector [icons](https://github.com/oblador/react-native-vector-icons)
-```sh
-npm i react-native-vector-icons
-```
 
 ## Starting the app
 - Running a device emulator. (
@@ -30,6 +26,11 @@ You should type something like
 ```sh
 export ANDROID_HOME=~/Android/Sdk/
 export PATH="${PATH}:${ANDROID_HOME}tools/:${ANDROID_HOME}platform-tools/:${ANDROID_HOME}emulator"
+```
+
+OR you can create a new file named `local.properties` inside the android folder and add this line:
+```sh
+sdk.dir=~/Android/Sdk/ # if it does not work try an absolute path instead of this relative one
 ```
 
 Now you can run the emulator command to start an emulator
@@ -49,3 +50,7 @@ cd {$ANDROID_HOME}/emulator/
 ```sh
 npm run start
 ```
+
+## Dependencies
+- [React native vector icons](https://github.com/oblador/react-native-vector-icons)
+- [React native picker](https://github.com/react-native-picker/picker)

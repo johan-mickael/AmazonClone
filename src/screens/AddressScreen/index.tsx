@@ -1,24 +1,26 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+import React, {useState} from 'react';
 import {
-  StyleSheet,
+  View,
   Text,
   TextInput,
-  View,
   Alert,
   ScrollView,
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
-import React, {useState, useEffect} from 'react';
 import {Picker} from '@react-native-picker/picker';
 import countryList from 'country-list';
-
 import Button from '../../components/Button';
 import styles from './styles';
 
 const countries = countryList.getData();
 
-export default function AddressScreen() {
+interface CountryProps {
+    code: string;
+    name: string;
+}
+
+const AddressScreen = () => {
   const [country, setCountry] = useState(countries[0].code);
   const [fullname, setFullname] = useState('');
   const [phone, setPhone] = useState('');
@@ -27,13 +29,8 @@ export default function AddressScreen() {
   const [addressError, setAddressError] = useState('');
 
   const [city, setCity] = useState('');
-  const [clientSecret, setClientSecret] = useState<string | null>(null);
 
-  const validateAddress = () => {
-    if (address.length < 3) {
-      setAddressError('Address is too short');
-    }
-  };
+  console.log(fullname);
 
   const onCheckout = () => {
     if (addressError) {
@@ -50,6 +47,14 @@ export default function AddressScreen() {
       Alert.alert('Please fill in the phone number field');
       return;
     }
+
+    console.warn('Success. CHeckout');
+  };
+
+  const validateAddress = () => {
+    if (address.length < 3) {
+      setAddressError('Address is too short');
+    }
   };
 
   return (
@@ -59,19 +64,10 @@ export default function AddressScreen() {
       <ScrollView style={styles.root}>
         <View style={styles.row}>
           <Picker selectedValue={country} onValueChange={setCountry}>
-            {countries.map(_country => (
-              <Picker.Item
-                key={_country.code}
-                label={_country.name}
-                value={_country.code}
-              />
+            {countries.map((_country: CountryProps) => (
+              <Picker.Item value={_country.code} label={_country.name} />
             ))}
           </Picker>
-        </View>
-
-        <View style={styles.row}>
-          <Text style={styles.label}>Full name (First and Last name)</Text>
-          <TextInput style={styles.input} placeholder="Full name" />
         </View>
 
         {/* Full name */}
@@ -130,4 +126,6 @@ export default function AddressScreen() {
       </ScrollView>
     </KeyboardAvoidingView>
   );
-}
+};
+
+export default AddressScreen;

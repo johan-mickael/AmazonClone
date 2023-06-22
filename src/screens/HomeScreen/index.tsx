@@ -5,7 +5,8 @@ import {StyleSheet} from 'react-native';
 
 import products from '../../data/products';
 
-const index = () => {
+const HomeScreen = ({searchValue}: {searchValue: string}) => {
+  console.log(searchValue);
   return (
     <View style={styles.page}>
       <FlatList
@@ -23,4 +24,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default index;
+export default HomeScreen;

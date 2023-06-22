@@ -24,7 +24,7 @@ First, make sure you have set correctly the ANDROID_HOME environment variable.
 For example your sdk home is located at `~/Android/Sdk`
 You should type something like
 ```sh
-export ANDROID_HOME=~/Android/Sdk/
+export ANDROID_HOME=/home/$USER/Android/Sdk/
 export PATH="${PATH}:${ANDROID_HOME}tools/:${ANDROID_HOME}platform-tools/:${ANDROID_HOME}emulator"
 ```
 
@@ -54,3 +54,4 @@ npm run start
 ## Dependencies
 - [React native vector icons](https://github.com/oblador/react-native-vector-icons)
 - [React native picker](https://github.com/react-native-picker/picker)
+- [React navigation](https://reactnavigation.org/docs/getting-started/) and all its others dependencies

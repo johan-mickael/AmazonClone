@@ -1,38 +1,49 @@
 import React from 'react';
-import {FlatList, Text, View} from 'react-native';
-import CartProductItems from '../../components/CartProductItem';
-import {StyleSheet} from 'react-native';
+import {View, StyleSheet, FlatList, Text} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
+import CartProductItem from '../../components/CartProductItem';
 import Button from '../../components/Button';
 
 import products from '../../data/cart';
 
-const ShoppingCartScreen = () => {
+const ShopingCartScreen = () => {
+  const navigation = useNavigation();
+
   const totalPrice = products.reduce(
     (summedPrice, product) =>
       summedPrice + product.item.price * product.quantity,
     0,
   );
 
+  const onCheckout = () => {
+    navigation.navigate('Address');
+  };
+
   return (
     <View style={styles.page}>
-      <View>
-        <Text style={{fontSize: 18, fontWeight: 'bold'}}>
-          Subtotal ({products.length} items):
-          <Text style={{color: '#e47911'}}>${totalPrice.toFixed(2)}</Text>
-        </Text>
-        <Button
-          text="Proceed to checkout"
-          onPress={() => console.warn('Go to checkout')}
-          containerStyles={{backgroundColor: '#f7e300', borderColor: '#c7b702'}}
-        />
-      </View>
+      {/* Render Product Componet */}
       <FlatList
         data={products}
-        renderItem={({item}) => (
-          <CartProductItems cartItem={item} />
-          // render quantity selector
-        )}
+        renderItem={({item}) => <CartProductItem cartItem={item} />}
         showsVerticalScrollIndicator={false}
+        ListHeaderComponent={() => (
+          <View>
+            <Text style={{fontSize: 18}}>
+              Subtotal ({products.length} items):{' '}
+              <Text style={{color: '#e47911', fontWeight: 'bold'}}>
+                ${totalPrice.toFixed(2)}
+              </Text>
+            </Text>
+            <Button
+              text="Proceed to checkout"
+              onPress={onCheckout}
+              containerStyles={{
+                backgroundColor: '#f7e300',
+                borderColor: '#c7b702',
+              }}
+            />
+          </View>
+        )}
       />
     </View>
   );
@@ -44,4 +55,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ShoppingCartScreen;
+export default ShopingCartScreen;

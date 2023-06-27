@@ -1,6 +1,5 @@
 import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import HomeScreen from '../screens/HomeScreen';
 import Entypo from 'react-native-vector-icons/Entypo';
 import ShoppingCartStack from './ShoppingCartStack';
 import ProfileScreen from '../screens/ProfileScreen';

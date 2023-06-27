@@ -1,11 +1,6 @@
-import React, {useState} from 'react';
-import {createStackNavigator} from '@react-navigation/stack';
-import HomeScreen from '../screens/HomeScreen';
-import ProductScreen from '../screens/ProductScreen';
+import React from 'react';
 import {SafeAreaView, View, TextInput, StyleSheet} from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
-
-const Stack = createStackNavigator();
 
 interface HeaderComponentProps {
   searchValue: string;
@@ -31,20 +26,7 @@ const HeaderComponent = ({
   );
 };
 
-const HomeStack = () => {
-  return (
-    <Stack.Navigator>
-      <Stack.Screen
-        name="HomeScreen"
-        options={{title: 'Home', headerShown: false}}>
-        {() => <HomeScreen />}
-      </Stack.Screen>
-      <Stack.Screen component={ProductScreen} name="ProductDetails" />
-    </Stack.Navigator>
-  );
-};
-
-export default HomeStack;
+export default HeaderComponent;
 
 const styles = StyleSheet.create({
   page: {

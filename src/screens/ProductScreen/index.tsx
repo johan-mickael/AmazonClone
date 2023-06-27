@@ -33,6 +33,10 @@ function ProductScreen() {
   const [selectedOption, setSelectedOption] = useState(null);
   const [quantity, setQuantity] = useState(1);
 
+  const handleButtonClick = () => {
+    console.warn('Buy now');
+  };
+
   return loading ? (
     <Loader size="large" color="#e47911" />
   ) : (
@@ -64,12 +68,7 @@ function ProductScreen() {
         }}
         containerStyles={{backgroundColor: '#e3c905'}}
       />
-      <Button
-        text={'Buy now'}
-        onPress={() => {
-          console.warn('Buy now');
-        }}
-      />
+      <Button text={'Buy now'} onPress={handleButtonClick} />
     </ScrollView>
   );
 }

@@ -11,7 +11,6 @@ export default function ImageCarousel({images}: {images: string[]}) {
   const [activeIndex, setActiveIndex] = useState(0);
   const windowWidth = useWindowDimensions().width;
   const onFlatListUpdate = useCallback(({viewableItems}) => {
-    console.log(viewableItems);
     if (viewableItems.length > 0) {
       setActiveIndex(viewableItems[0].index || 0);
     }
@@ -39,14 +38,18 @@ export default function ImageCarousel({images}: {images: string[]}) {
         onViewableItemsChanged={onFlatListUpdate}
       />
       <View style={styles.dots}>
-        {images.map((image, index) => (
-          <View
-            style={[
-              styles.dot,
-              {backgroundColor: index === activeIndex ? '#c9c9c9' : '#ededed'},
-            ]}
-          />
-        ))}
+        {images &&
+          images.map((image, index) => (
+            <View
+              style={[
+                styles.dot,
+                {
+                  backgroundColor:
+                    index === activeIndex ? '#c9c9c9' : '#ededed',
+                },
+              ]}
+            />
+          ))}
       </View>
     </View>
   );

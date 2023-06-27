@@ -41,7 +41,7 @@ function CartProductItem({cartItem}: CartProductItemProps) {
           <View style={styles.ratingsContainer}>
             {[0, 0, 0, 0, 0].map((el, i) => (
               <FontAwesome
-                key={`${item.id}-${i}`}
+                key={`${item._id}-${i}`}
                 style={styles.star}
                 name={i < Math.floor(item.avgRating) ? 'star' : 'star-o'}
                 size={18}

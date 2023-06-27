@@ -7,6 +7,7 @@ import {useNavigation} from '@react-navigation/native';
 
 interface ProductItemProps {
   item: {
+    _id: string;
     id: string;
     title: string;
     image: string;
@@ -22,7 +23,7 @@ function ProductItem({item}: ProductItemProps) {
 
   const onPress = () => {
     console.warn(`Product ${item.title} has been pressed`);
-    navigation.navigate('ProductDetails', {id: item.id});
+    navigation.navigate('ProductDetails', {id: item._id});
   };
 
   return (
@@ -40,7 +41,7 @@ function ProductItem({item}: ProductItemProps) {
         <View style={styles.ratingsContainer}>
           {[0, 0, 0, 0, 0].map((el, i) => (
             <FontAwesome
-              key={`${item.id}-${i}`}
+              key={`${item._id} + ${i}`}
               style={styles.star}
               name={i < Math.floor(item.avgRating) ? 'star' : 'star-o'}
               size={18}

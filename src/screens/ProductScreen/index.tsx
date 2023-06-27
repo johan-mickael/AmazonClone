@@ -1,34 +1,54 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 
 import styles from './styles';
 import {View, Text, Image, ScrollView} from 'react-native';
-import product from '../../data/product';
 import {Picker} from '@react-native-picker/picker';
 import QuantitySelector from '../../components/QuantitySelector';
 import Button from '../../components/Button';
 import ImageCarousel from '../../components/ImageCarousel';
 import {useRoute} from '@react-navigation/native';
+import Loader from '../../components/Loader';
 
 function ProductScreen() {
-  const [selectedOption, setSelectedOption] = useState(
-    product.options[0] ? product.options[0] : null,
-  );
+  const route = useRoute();
+  const [product, setProduct] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:3000/api/products/${route.params.id}`,
+        );
+        const json = await response.json();
+        setProduct(json);
+        setLoading(false);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchProduct();
+  }, [route.params.id]);
+
+  const [selectedOption, setSelectedOption] = useState(null);
   const [quantity, setQuantity] = useState(1);
 
-  const route = useRoute();
-  console.log(route.params);
-
-  return (
+  return loading ? (
+    <Loader size="large" color="#e47911" />
+  ) : (
     <ScrollView style={styles.root}>
       <Text>{product.title}</Text>
       <ImageCarousel images={product.images} />
-      <Picker
-        selectedValue={selectedOption}
-        onValueChange={itemValue => setSelectedOption(itemValue)}>
-        {product.options.map(option => (
-          <Picker.Item label={option} value={option} />
-        ))}
-      </Picker>
+      {product.options && (
+        <Picker
+          selectedValue={selectedOption}
+          onValueChange={itemValue => setSelectedOption(itemValue)}>
+          {product.options.map(option => (
+            <Picker.Item label={option} value={option} />
+          ))}
+        </Picker>
+      )}
+
       <Text style={styles.price}>
         from ${product.price}
         {product.oldPrice && (

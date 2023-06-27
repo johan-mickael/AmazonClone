@@ -1,9 +1,12 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 
 import {View, Image, Text} from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import styles from './styles';
 import QuantitySelector from '../QuantitySelector';
+import axios from 'axios';
+import {useDispatch, useSelector} from 'react-redux';
+import {setGlobalVariable} from '../../store';
 
 interface CartProductItemProps {
   cartItem: {
@@ -25,6 +28,23 @@ interface CartProductItemProps {
 function CartProductItem({cartItem}: CartProductItemProps) {
   const {quantity: quantityProp, item} = cartItem;
   const [quantity, setQuantity] = useState(quantityProp);
+  const globalVariable = useSelector(state => state.globalVariable.value);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const updateQuantity = async () => {
+      await axios.post(
+        `http://localhost:3000/api/carts/remove/item/${cartItem._id}`,
+        {
+          quantity,
+        },
+      );
+      const res = await axios.get('http://localhost:3000/api/carts/count');
+      dispatch(setGlobalVariable(res.data));
+    };
+    updateQuantity();
+  }, [quantity]);
+
   return (
     <View style={styles.root}>
       <View style={styles.row}>

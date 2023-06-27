@@ -11,6 +11,9 @@ import {Colors} from 'react-native/Libraries/NewAppScreen';
 import Router from './src/router';
 import {Provider} from 'react-redux';
 import store from './src/store';
+import {LogBox} from 'react-native';
+
+LogBox.ignoreAllLogs();
 
 function App(): JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';

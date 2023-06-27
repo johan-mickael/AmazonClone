@@ -39,7 +39,7 @@ const HomeStack = () => {
         options={{title: 'Home', headerShown: false}}>
         {() => <HomeScreen />}
       </Stack.Screen>
-      <Stack.Screen component={ProductScreen} name="ProductDetails" />
+      <Stack.Screen component={ProductScreen} name="ProductDetails" options={{title: "Product details"}} />
     </Stack.Navigator>
   );
 };

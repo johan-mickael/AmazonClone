@@ -24,9 +24,9 @@ const ProductsListScreen = ({searchValue = ''}) => {
   const fetchApi = async endpoint => {
     try {
       const {data} = await axios.get(endpoint);
+      setLoading(false);
+      setLoadNewData(false);
       if (data.length === 0) {
-        setLoading(false);
-        setLoadNewData(false);
         return [];
       }
       setLoading(false);
@@ -43,6 +43,8 @@ const ProductsListScreen = ({searchValue = ''}) => {
     const data = await fetchApi(
       `http://localhost:3000/api/products?page=${page}`,
     );
+    setLoading(false);
+    setLoadNewData(false);
     if (data.length === 0) {
       return;
     }

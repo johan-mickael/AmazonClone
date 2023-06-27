@@ -12,6 +12,14 @@ const ShopingCartScreen = () => {
   const isFocused = useIsFocused();
   const [loading, setLoading] = useState(false);
 
+  const fetchCart = async () => {
+    setLoading(true);
+    const res = await axios.get('http://localhost:3000/api/carts');
+    const cart = res.data;
+    setProducts(cart);
+    setLoading(false);
+  };
+
   useEffect(() => {
     async function fetchCart() {
       setLoading(true);

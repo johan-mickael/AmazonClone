@@ -7,11 +7,13 @@ const IconWithBadge = ({icon, badge}) => {
   return (
     <View>
       <Entypo name={icon.name} color={icon.color} size={25} />
-      <Badge
-        value={badge.text}
-        status={badge.status}
-        containerStyle={{position: 'absolute', top: -10, right: -10}}
-      />
+      {badge.text != 0 && (
+        <Badge
+          value={badge.text}
+          status={badge.status}
+          containerStyle={{position: 'absolute', top: -10, right: -10}}
+        />
+      )}
     </View>
   );
 };

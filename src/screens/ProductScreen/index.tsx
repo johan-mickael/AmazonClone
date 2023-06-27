@@ -8,11 +8,16 @@ import Button from '../../components/Button';
 import ImageCarousel from '../../components/ImageCarousel';
 import {useRoute} from '@react-navigation/native';
 import Loader from '../../components/Loader';
+import axios from 'axios';
+import {useDispatch, useSelector} from 'react-redux';
+import {setGlobalVariable} from '../../store';
 
 function ProductScreen() {
   const route = useRoute();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
+  const globalVariable = useSelector(state => state.globalVariable.value);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -35,6 +40,17 @@ function ProductScreen() {
 
   const handleButtonClick = () => {
     console.warn('Buy now');
+  };
+
+  const addToCart = async () => {
+    await axios.post('http://localhost:3000/api/carts', {
+      productId: product._id,
+      quantity,
+      option: selectedOption,
+    });
+    const res = await axios.get('http://localhost:3000/api/carts/count');
+    dispatch(setGlobalVariable(res.data));
+    console.log('Added to cart');
   };
 
   return loading ? (
@@ -63,9 +79,7 @@ function ProductScreen() {
       <QuantitySelector quantity={quantity} setQuantity={setQuantity} />
       <Button
         text={'Add to cart'}
-        onPress={() => {
-          console.warn('Add to cart');
-        }}
+        onPress={addToCart}
         containerStyles={{backgroundColor: '#e3c905'}}
       />
       <Button text={'Buy now'} onPress={handleButtonClick} />

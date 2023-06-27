@@ -1,13 +1,27 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, StyleSheet, FlatList, Text} from 'react-native';
-import {useNavigation} from '@react-navigation/native';
+import {useIsFocused, useNavigation} from '@react-navigation/native';
 import CartProductItem from '../../components/CartProductItem';
 import Button from '../../components/Button';
-
-import products from '../../data/cart';
+import axios from 'axios';
+import Loader from '../../components/Loader';
 
 const ShopingCartScreen = () => {
+  const [products, setProducts] = useState([]);
   const navigation = useNavigation();
+  const isFocused = useIsFocused();
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    async function fetchCart() {
+      setLoading(true);
+      const res = await axios.get('http://localhost:3000/api/carts');
+      const cart = res.data;
+      setProducts(cart);
+      setLoading(false);
+    }
+    fetchCart();
+  }, [isFocused]);
 
   const totalPrice = products.reduce(
     (summedPrice, product) =>
@@ -19,34 +33,41 @@ const ShopingCartScreen = () => {
     navigation.navigate('Address');
   };
 
-  return (
-    <View style={styles.page}>
-      {/* Render Product Componet */}
-      <FlatList
-        data={products}
-        renderItem={({item}) => <CartProductItem cartItem={item} />}
-        showsVerticalScrollIndicator={false}
-        ListHeaderComponent={() => (
-          <View>
-            <Text style={{fontSize: 18}}>
-              Subtotal ({products.length} items):{' '}
-              <Text style={{color: '#e47911', fontWeight: 'bold'}}>
-                ${totalPrice.toFixed(2)}
+  const render = () => {
+    if (loading) {
+      return <Loader size="large" color="#e47911" />;
+    }
+    return (
+      <View style={styles.page}>
+        {/* Render Product Componet */}
+        <FlatList
+          data={products}
+          renderItem={({item}) => <CartProductItem cartItem={item} />}
+          showsVerticalScrollIndicator={false}
+          ListHeaderComponent={() => (
+            <View>
+              <Text style={{fontSize: 18}}>
+                Subtotal ({products.length} items):{' '}
+                <Text style={{color: '#e47911', fontWeight: 'bold'}}>
+                  ${totalPrice.toFixed(2)}
+                </Text>
               </Text>
-            </Text>
-            <Button
-              text="Proceed to checkout"
-              onPress={onCheckout}
-              containerStyles={{
-                backgroundColor: '#f7e300',
-                borderColor: '#c7b702',
-              }}
-            />
-          </View>
-        )}
-      />
-    </View>
-  );
+              <Button
+                text="Proceed to checkout"
+                onPress={onCheckout}
+                containerStyles={{
+                  backgroundColor: '#f7e300',
+                  borderColor: '#c7b702',
+                }}
+              />
+            </View>
+          )}
+        />
+      </View>
+    );
+  };
+
+  return render();
 };
 
 const styles = StyleSheet.create({

@@ -1,14 +1,31 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Entypo from 'react-native-vector-icons/Entypo';
 import ShoppingCartStack from './ShoppingCartStack';
 import ProfileScreen from '../screens/ProfileScreen';
 import MoreScreen from '../screens/MoreScreen';
 import HomeStack from './HomeStack';
+import {Badge} from 'react-native-elements';
+import IconWithBadge from '../components/IconWithBadge';
+import {useDispatch, useSelector} from 'react-redux';
+import {setGlobalVariable} from '../store';
+import axios from 'axios';
 
 const Tab = createBottomTabNavigator();
 
 const BottomTabNav = () => {
+  const globalVariable = useSelector(state => state.globalVariable.value);
+  const dispatch = useDispatch();
+
+  // count cart items
+  useEffect(() => {
+    async function fetchCart() {
+      const res = await axios.get('http://localhost:3000/api/carts/count/item');
+      dispatch(setGlobalVariable(res.data));
+    }
+    fetchCart();
+  }, [globalVariable]);
+
   return (
     <Tab.Navigator
       tabBarOptions={{
@@ -41,7 +58,10 @@ const BottomTabNav = () => {
         options={{
           headerShown: false,
           tabBarIcon: ({color}) => (
-            <Entypo name="shopping-cart" color={color} size={25} />
+            <IconWithBadge
+              icon={{name: 'shopping-cart', color: color}}
+              badge={{text: globalVariable, status: 'error'}}
+            />
           ),
         }}
       />

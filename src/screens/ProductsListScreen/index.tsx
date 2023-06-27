@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {FlatList, SafeAreaView, TextInput, View} from 'react-native';
+import {FlatList, SafeAreaView, Text, TextInput, View} from 'react-native';
 import ProductItems from '../../components/ProductItem';
 import {StyleSheet} from 'react-native';
 import axios from 'axios';
@@ -64,11 +64,11 @@ const ProductsListScreen = ({searchValue = ''}) => {
     }
     setProducts(data);
   };
-  const debouncedSearch = debounce(searchProducts, 500);
 
   useEffect(() => {
     fetchProducts();
   }, []);
+  const debouncedSearch = debounce(searchProducts, 500);
 
   useEffect(() => {
     debouncedSearch(searchValue);
@@ -80,7 +80,7 @@ const ProductsListScreen = ({searchValue = ''}) => {
     }
     setLoadNewData(true);
     setPage(page + 1);
-    // fetchProducts();
+    fetchProducts();
   };
 
   const keyExtractor = item => item._id.toString();
@@ -94,7 +94,9 @@ const ProductsListScreen = ({searchValue = ''}) => {
       );
     }
     return loading ? (
-      <Loader size="large" color="#e47911" />
+      <View style={{padding: 40}}>
+        <Loader size="large" color="#e47911" />
+      </View>
     ) : (
       <View style={styles.page}>
         <View>
@@ -108,9 +110,11 @@ const ProductsListScreen = ({searchValue = ''}) => {
             keyExtractor={keyExtractor}
           />
         </View>
-        <View>
-          <Loader size="large" color="#e47911" />
-        </View>
+        {loadNewData && (
+          <View style={styles.infiniteLoader}>
+            <Loader size="large" color="gray" />
+          </View>
+        )}
       </View>
     );
   };
@@ -121,9 +125,23 @@ const ProductsListScreen = ({searchValue = ''}) => {
 const styles = StyleSheet.create({
   page: {
     padding: 10,
+    height: '100%',
+    width: '100%',
   },
   flatlist: {
     paddingBottom: 150,
+  },
+  infiniteLoader: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    backgroundColor: 'white',
+    height: '95%',
+    width: '105%',
+    opacity: 0.4,
+  },
+  loading: {
+    backgroundColor: '',
   },
 });
 

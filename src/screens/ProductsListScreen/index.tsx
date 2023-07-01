@@ -1,11 +1,12 @@
 import React, {useState, useEffect} from 'react';
-import {FlatList, SafeAreaView, Text, TextInput, View} from 'react-native';
+import {FlatList, View} from 'react-native';
 import ProductItems from '../../components/ProductItem';
 import {StyleSheet} from 'react-native';
 import axios from 'axios';
 import Loader from '../../components/Loader';
 import debounce from 'lodash.debounce';
 import Snackbar from '../../components/Snackbar';
+import {API_URL} from '../../../config/constants';
 
 const ProductsListScreen = ({searchValue = ''}) => {
   const [loading, setLoading] = useState(true);
@@ -14,14 +15,15 @@ const ProductsListScreen = ({searchValue = ''}) => {
   const [loadNewData, setLoadNewData] = useState(false);
   const [noData, setNoData] = useState(false);
 
-  const handleError = () => {
+  const handleError = (error: any) => {
     setProducts([]);
     setNoData(true);
     setLoadNewData(false);
     setLoading(false);
+    console.error(error);
   };
 
-  const fetchApi = async endpoint => {
+  const fetchApi = async (endpoint: string) => {
     try {
       const {data} = await axios.get(endpoint);
       setLoading(false);
@@ -33,16 +35,14 @@ const ProductsListScreen = ({searchValue = ''}) => {
       setLoadNewData(false);
       return data;
     } catch (error) {
-      handleError();
+      handleError(error);
     }
   };
 
   const fetchProducts = async () => {
     setNoData(false);
     setLoadNewData(true);
-    const data = await fetchApi(
-      `http://localhost:3000/api/products?page=${page}`,
-    );
+    const data = await fetchApi(`${API_URL}/products?page=${page}`);
     setLoading(false);
     setLoadNewData(false);
     if (data.length === 0) {
@@ -55,9 +55,7 @@ const ProductsListScreen = ({searchValue = ''}) => {
     setLoading(true);
     setNoData(false);
     setPage(1);
-    const data = await fetchApi(
-      `http://localhost:3000/api/products?search=${search}&limit=0`,
-    );
+    const data = await fetchApi(`${API_URL}/products?search=${search}&limit=0`);
     if (data.length === 0) {
       setNoData(true);
       setProducts([]);

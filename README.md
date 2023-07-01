@@ -55,3 +55,9 @@ npm run start
 - [React native vector icons](https://github.com/oblador/react-native-vector-icons)
 - [React native picker](https://github.com/react-native-picker/picker)
 - [React navigation](https://reactnavigation.org/docs/getting-started/) and all its others dependencies
+
+## API
+If you want to use a local API, you should reverse the tcp ip port like following
+```sh
+adb -s <deviceName> reverse tcp:3000 tcp:3000
+```

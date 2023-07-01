@@ -11,6 +11,8 @@ import Loader from '../../components/Loader';
 import axios from 'axios';
 import {useDispatch, useSelector} from 'react-redux';
 import {setGlobalVariable} from '../../store';
+import Snackbar from 'react-native-snackbar';
+import {API_URL} from '../../../config/constants';
 
 function ProductScreen() {
   const route = useRoute();
@@ -22,9 +24,7 @@ function ProductScreen() {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const response = await fetch(
-          `http://localhost:3000/api/products/${route.params.id}`,
-        );
+        const response = await fetch(`${API_URL}/products/${route.params.id}`);
         const json = await response.json();
         setProduct(json);
         setLoading(false);
@@ -43,14 +43,20 @@ function ProductScreen() {
   };
 
   const addToCart = async () => {
-    await axios.post('http://localhost:3000/api/carts', {
+    if (0 >= quantity) {
+      return;
+    }
+    await axios.post(`${API_URL}/carts`, {
       productId: product._id,
       quantity,
       option: selectedOption,
     });
-    const res = await axios.get('http://localhost:3000/api/carts/count');
+    const res = await axios.get(`${API_URL}/carts/count`);
     dispatch(setGlobalVariable(res.data));
-    console.log('Added to cart');
+    Snackbar.show({
+      text: `${quantity} item${quantity > 1 ? 's' : ''} added to cart`,
+      duration: Snackbar.LENGTH_SHORT,
+    });
   };
 
   return loading ? (

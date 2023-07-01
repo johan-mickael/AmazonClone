@@ -12,12 +12,13 @@ import {Picker} from '@react-native-picker/picker';
 import countryList from 'country-list';
 import Button from '../../components/Button';
 import styles from './styles';
+import Snackbar from 'react-native-snackbar';
 
 const countries = countryList.getData();
 
 interface CountryProps {
-    code: string;
-    name: string;
+  code: string;
+  name: string;
 }
 
 const AddressScreen = () => {
@@ -30,9 +31,12 @@ const AddressScreen = () => {
 
   const [city, setCity] = useState('');
 
-  console.log(fullname);
-
   const onCheckout = () => {
+    Snackbar.show({
+      text: 'Checking out is not available yet.',
+      duration: Snackbar.LENGTH_SHORT,
+    });
+
     if (addressError) {
       Alert.alert('Fix all field errors before submiting');
       return;

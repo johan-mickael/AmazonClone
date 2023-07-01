@@ -5,6 +5,7 @@ import CartProductItem from '../../components/CartProductItem';
 import Button from '../../components/Button';
 import axios from 'axios';
 import Loader from '../../components/Loader';
+import { API_URL } from '../../../config/constants';
 
 const ShopingCartScreen = () => {
   const [products, setProducts] = useState([]);
@@ -14,7 +15,7 @@ const ShopingCartScreen = () => {
 
   const fetchCart = async () => {
     setLoading(true);
-    const res = await axios.get('http://localhost:3000/api/carts');
+    const res = await axios.get(`${API_URL}/carts`);
     const cart = res.data;
     setProducts(cart);
     setLoading(false);
@@ -23,7 +24,7 @@ const ShopingCartScreen = () => {
   useEffect(() => {
     async function fetchCart() {
       setLoading(true);
-      const res = await axios.get('http://localhost:3000/api/carts');
+      const res = await axios.get(`${API_URL}/carts`);
       const cart = res.data;
       setProducts(cart);
       setLoading(false);

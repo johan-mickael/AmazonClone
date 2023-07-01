@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, {useEffect} from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Entypo from 'react-native-vector-icons/Entypo';
 import ShoppingCartStack from './ShoppingCartStack';
@@ -10,6 +10,7 @@ import IconWithBadge from '../components/IconWithBadge';
 import {useDispatch, useSelector} from 'react-redux';
 import {setGlobalVariable} from '../store';
 import axios from 'axios';
+import {API_URL} from '../../config/constants';
 
 const Tab = createBottomTabNavigator();
 
@@ -20,7 +21,7 @@ const BottomTabNav = () => {
   // count cart items
   useEffect(() => {
     async function fetchCart() {
-      const res = await axios.get('http://localhost:3000/api/carts/count/item');
+      const res = await axios.get(`${API_URL}/carts/count/item`);
       dispatch(setGlobalVariable(res.data));
     }
     fetchCart();

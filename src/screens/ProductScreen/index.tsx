@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 
 import styles from './styles';
-import {View, Text, Image, ScrollView} from 'react-native';
+import {Text, ScrollView} from 'react-native';
 import {Picker} from '@react-native-picker/picker';
 import QuantitySelector from '../../components/QuantitySelector';
 import Button from '../../components/Button';
@@ -9,8 +9,8 @@ import ImageCarousel from '../../components/ImageCarousel';
 import {useRoute} from '@react-navigation/native';
 import Loader from '../../components/Loader';
 import axios from 'axios';
-import {useDispatch, useSelector} from 'react-redux';
-import {setGlobalVariable} from '../../store';
+import {useDispatch} from 'react-redux';
+import {setTotalCount, setTotalPrice} from '../../store';
 import Snackbar from 'react-native-snackbar';
 import {API_URL} from '../../../config/constants';
 
@@ -18,7 +18,6 @@ function ProductScreen() {
   const route = useRoute();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
-  const globalVariable = useSelector(state => state.globalVariable.value);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -51,8 +50,9 @@ function ProductScreen() {
       quantity,
       option: selectedOption,
     });
-    const res = await axios.get(`${API_URL}/carts/count`);
-    dispatch(setGlobalVariable(res.data));
+    const res = await axios.get(`${API_URL}/carts/sum`);
+    dispatch(setTotalCount(res.data.count));
+    dispatch(setTotalPrice(res.data.price));
     Snackbar.show({
       text: `${quantity} item${quantity > 1 ? 's' : ''} added to cart`,
       duration: Snackbar.LENGTH_SHORT,

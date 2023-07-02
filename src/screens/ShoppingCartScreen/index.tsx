@@ -5,21 +5,16 @@ import CartProductItem from '../../components/CartProductItem';
 import Button from '../../components/Button';
 import axios from 'axios';
 import Loader from '../../components/Loader';
-import { API_URL } from '../../../config/constants';
+import {API_URL} from '../../../config/constants';
+import {useSelector} from 'react-redux';
 
 const ShopingCartScreen = () => {
   const [products, setProducts] = useState([]);
   const navigation = useNavigation();
   const isFocused = useIsFocused();
   const [loading, setLoading] = useState(false);
+  const totalPrice = useSelector(state => state.globalVariable.price);
 
-  const fetchCart = async () => {
-    setLoading(true);
-    const res = await axios.get(`${API_URL}/carts`);
-    const cart = res.data;
-    setProducts(cart);
-    setLoading(false);
-  };
 
   useEffect(() => {
     async function fetchCart() {
@@ -31,12 +26,6 @@ const ShopingCartScreen = () => {
     }
     fetchCart();
   }, [isFocused]);
-
-  const totalPrice = products.reduce(
-    (summedPrice, product) =>
-      summedPrice + product.item.price * product.quantity,
-    0,
-  );
 
   const onCheckout = () => {
     navigation.navigate('Address');

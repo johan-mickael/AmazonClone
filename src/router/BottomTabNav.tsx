@@ -8,24 +8,25 @@ import HomeStack from './HomeStack';
 import {Badge} from 'react-native-elements';
 import IconWithBadge from '../components/IconWithBadge';
 import {useDispatch, useSelector} from 'react-redux';
-import {setGlobalVariable} from '../store';
+import {setTotalCount, setTotalPrice} from '../store';
 import axios from 'axios';
 import {API_URL} from '../../config/constants';
 
 const Tab = createBottomTabNavigator();
 
 const BottomTabNav = () => {
-  const globalVariable = useSelector(state => state.globalVariable.value);
+  const totalItems = useSelector(state => state.globalVariable.count);
   const dispatch = useDispatch();
 
   // count cart items
   useEffect(() => {
     async function fetchCart() {
-      const res = await axios.get(`${API_URL}/carts/count/item`);
-      dispatch(setGlobalVariable(res.data));
+      const res = await axios.get(`${API_URL}/carts/sum`);
+      dispatch(setTotalCount(res.data.count));
+      dispatch(setTotalPrice(res.data.price));
     }
     fetchCart();
-  }, [globalVariable]);
+  }, [totalItems]);
 
   return (
     <Tab.Navigator
@@ -61,7 +62,7 @@ const BottomTabNav = () => {
           tabBarIcon: ({color}) => (
             <IconWithBadge
               icon={{name: 'shopping-cart', color: color}}
-              badge={{text: globalVariable, status: 'error'}}
+              badge={{text: totalItems, status: 'error'}}
             />
           ),
         }}

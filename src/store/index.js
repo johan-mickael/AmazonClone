@@ -5,17 +5,21 @@ import {configureStore, createSlice} from '@reduxjs/toolkit';
 const globalVariableSlice = createSlice({
   name: 'globalVariable',
   initialState: {
-    value: '0',
+    count: '0',
+    price: '0',
   },
   reducers: {
-    setGlobalVariable: (state, action) => {
-      state.value = action.payload < 10 ? action.payload : '9+';
+    setTotalCount: (state, action) => {
+      state.count = action.payload < 10 ? action.payload : '9+';
+    },
+    setTotalPrice: (state, action) => {
+      state.price = action.payload;
     },
   },
 });
 
 const {reducer: globalVariableReducer, actions} = globalVariableSlice;
-export const {setGlobalVariable} = actions;
+export const {setTotalCount, setTotalPrice} = actions;
 
 const store = configureStore({
   reducer: {

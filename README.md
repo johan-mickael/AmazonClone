@@ -63,4 +63,4 @@ adb -s <deviceName> reverse tcp:3000 tcp:3000
 ```
 
 ## Release
-A non production-ready [apk](https://github.com/johan-mickael/AmazonClone/releases/tag/apk-not-ready) is available
+A non production-ready [apk](https://github.com/johan-mickael/AmazonClone/releases/tag/v0.0.1) is available

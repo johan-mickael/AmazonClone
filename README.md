@@ -61,3 +61,6 @@ If you want to use a local API, you should reverse the tcp ip port like followin
 ```sh
 adb -s <deviceName> reverse tcp:3000 tcp:3000
 ```
+
+## Release
+A non production-ready [apk](https://github.com/johan-mickael/AmazonClone/releases/tag/apk-not-ready) is available
